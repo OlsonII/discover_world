@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "120892583881",
+    "firebase_url": "https://turist-app-82be4.firebaseio.com",
+    "project_id": "turist-app-82be4",
+    "storage_bucket": "turist-app-82be4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120892583881:android:9be16eacdef97775cd4218",
+        "android_client_info": {
+          "package_name": "com.OlsonLabs.discover_colombia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120892583881-7bl2863tsphjc27mkpnnm5p4bkvrtmrj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC15x5LTneL-rQbEobJF36ug42wSNFrlgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120892583881-7bl2863tsphjc27mkpnnm5p4bkvrtmrj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120892583881-2q58m5spr0dfncr3t651cgla0rlhlq7b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.discoverColombia"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120892583881:android:7b732e6dd9fbbd49cd4218",
+        "android_client_info": {
+          "package_name": "com.OlsonLabs.discover_world"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120892583881-7bl2863tsphjc27mkpnnm5p4bkvrtmrj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC15x5LTneL-rQbEobJF36ug42wSNFrlgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120892583881-7bl2863tsphjc27mkpnnm5p4bkvrtmrj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120892583881-2q58m5spr0dfncr3t651cgla0rlhlq7b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.discoverColombia"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
