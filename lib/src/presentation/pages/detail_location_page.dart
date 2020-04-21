@@ -152,63 +152,69 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
   }
 
   Widget _buildButtonsMenu() {
-    return !_isCollapsed ? Container(
+    return Container(
       margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      child: Scrollbar(
-        child: SingleChildScrollView(
-          child: Row(
-            children: <Widget>[
-              FlatButton(
-                  onPressed: (){
-                    setState(() {
-                      _starColor = Colors.blue;
-                      _endColor = Colors.cyan;
-                    });
-                    _selectedPage = 0;
-                    },
-                  child: Text('Sitios', style: TextStyle(color: Colors.white)
-                  )
-              ),
-              FlatButton(
-                  onPressed: (){
-                    setState(() {
-                      _starColor = Colors.red;
-                      _endColor = Colors.orange;
-                    });
-                    _selectedPage = 1;
-                  },
-                  child: Text('Eventos', style: TextStyle(color: Colors.white)
-                  )
-              ),
-              FlatButton(
-                  onPressed: (){
-                    setState(() {
-                      _starColor = Colors.green;
-                      _endColor = Colors.lightGreen;
-                    });
-                    _selectedPage = 2;
-                  },
-                  child: Text('Actividades', style: TextStyle(color: Colors.white)
-                  )
-              ),
-              Flexible(
-                child: FlatButton(
-                    onPressed: (){
-                      setState(() {
-                        _starColor = Colors.deepPurple;
-                        _endColor = Colors.purple;
-                      });
-                      _selectedPage = 3;
-                    },
-                    child: Text('Historias', style: TextStyle(color: Colors.white)
-                    )
-                ),
-              ),
-            ],
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Container(),
           ),
-        ),
+          FlatButton(
+              onPressed: (){
+                setState(() {
+                  _starColor = Colors.blue;
+                  _endColor = Colors.cyan;
+                });
+                _selectedPage = 0;
+                },
+              color: _selectedPage == 0 ? Colors.white10 : Colors.transparent,
+              child: Text('Sitios', style: TextStyle(color: Colors.white)
+              )
+          ),
+          FlatButton(
+              onPressed: (){
+                setState(() {
+                  _starColor = Colors.red;
+                  _endColor = Colors.orange;
+                });
+                _selectedPage = 1;
+              },
+              color: _selectedPage == 1 ? Colors.white10 : Colors.transparent,
+              child: Text('Eventos', style: TextStyle(color: Colors.white)
+              )
+          ),
+          /*Flexible(
+            child: FlatButton(
+                onPressed: (){
+                  setState(() {
+                    _starColor = Colors.green;
+                    _endColor = Colors.lightGreen;
+                  });
+                  _selectedPage = 2;
+                },
+                color: _selectedPage == 2 ? Colors.white10 : Colors.transparent,
+                child: Text('Actividades', style: TextStyle(color: Colors.white)
+                )
+            ),
+          ),*/
+          FlatButton(
+              onPressed: (){
+                setState(() {
+                  _starColor = Colors.green;
+                  _endColor = Colors.lightGreen;
+                });
+                _selectedPage = 3;
+              },
+              color: _selectedPage == 3 ? Colors.white10 : Colors.transparent,
+              child: Text('Historias', style: TextStyle(color: Colors.white)
+              )
+          ),
+          Expanded(
+            child: Container(),
+          ),
+        ],
       ),
-    ) : SizedBox(height: _screenSize.height*0.05);
+    );
   }
 
   Widget _buildSearchBar() {
@@ -238,6 +244,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
   _buildPrincipalContainer() {
     return Expanded(
       child: Container(
+        padding: EdgeInsets.only(top: 20.0, right: 5.0, left: 5.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
             color: Colors.white
@@ -251,8 +258,8 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
               _pages = [
                 SitesPage(sitesOfLocationSelected: snapshot.data.location.sites),
                 EventsPage(events: snapshot.data.location.events,),
-                /*ActivitiesPage(),
-                HistoriesPage(),*/
+                Container(),
+                HistoriesPage(histories: snapshot.data.location.histories),
               ];
 
               switch(_selectedPage){
@@ -260,6 +267,9 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
                   return _pages[_selectedPage];
                   break;
                 case 1:
+                  return _pages[_selectedPage];
+                  break;
+                case 3:
                   return _pages[_selectedPage];
                   break;
               }

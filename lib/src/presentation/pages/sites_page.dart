@@ -12,6 +12,7 @@ class SitesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _screenSize = MediaQuery.of(context).size;
     return ListView.builder(
+      scrollDirection: Axis.vertical,
       itemCount: sitesOfLocationSelected.length,
       itemBuilder: (context, index) => _createItem(context, sitesOfLocationSelected[index])
     );
@@ -21,6 +22,7 @@ class SitesPage extends StatelessWidget {
     return Container(
       child: GestureDetector(
         child: Card(
+          elevation: 3.0,
           child: Column(
             children: <Widget>[
               Container(
