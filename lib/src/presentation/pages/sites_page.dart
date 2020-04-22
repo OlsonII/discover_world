@@ -30,13 +30,14 @@ class SitesPage extends StatelessWidget {
                 child: Image.asset('assets/images.png'),
               ),
               ListTile(
-                title: Text(site.name),
+                title: Text(site.name, style: TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text(site.description),
                 trailing: Icon(Icons.info),
               ),
             ],
           ),
         ),
+        onTap: () => Navigator.of(context).pushNamed('/details_site', arguments: {site}),
       ),
     );
   }

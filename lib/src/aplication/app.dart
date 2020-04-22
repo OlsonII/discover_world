@@ -1,4 +1,5 @@
 import 'package:discover_world/src/presentation/pages/detail_location_page.dart';
+import 'package:discover_world/src/presentation/pages/detail_site_page.dart';
 import 'package:discover_world/src/presentation/pages/search_location_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +12,13 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'ProductSans'
       ),
-      initialRoute: '/details',
+      initialRoute: '/search_location',
       routes: {
-        '/details'     : (BuildContext context) => DetailLocationPage(),
-        '/search' : (BuildContext context) => SearchLocationPage()
+        '/details_location'     : (BuildContext context) => DetailLocationPage(),
+        '/details_site' : (BuildContext context) => DetailSitePage(),
+        '/search_location' : (BuildContext context) => SearchLocationPage()
       },
     );
   }
