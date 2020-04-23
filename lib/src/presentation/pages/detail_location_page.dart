@@ -23,18 +23,18 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
   Size _screenSize;
   bool _isCollapsed = false;
   Duration _animationDuration = Duration(milliseconds: 400);
-  String locationSelected;
-  int _selectedPage = 0;
+  String locationSelected = 'Valledupar';
   List<Widget> _pages;
-  Color _searchIconColor = Color.fromRGBO(100, 196, 207, 1);
+  int _selectedPage = 0;
   Color _starColor = Color.fromRGBO(55, 157, 168, 1);
   Color _endColor = Color.fromRGBO(99, 196, 207, 1);
+  Color _searchBarItemsColor = Color.fromRGBO(55, 157, 168, 0.6);
 
   @override
   Widget build(BuildContext context) {
 
     _screenSize = MediaQuery.of(context).size;
-    locationSelected = ModalRoute.of(context).settings.arguments;
+//    locationSelected = ModalRoute.of(context).settings.arguments;
     locationBloc.sendLocationEvent.add(GetLocation(locationName: locationSelected));
 
     return Scaffold(
@@ -172,7 +172,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
                 setState(() {
                   _starColor = Color.fromRGBO(55, 157, 168, 1);
                   _endColor = Color.fromRGBO(99, 196, 207, 1);
-                  _searchIconColor = _starColor;
+                  _searchBarItemsColor = Color.fromRGBO(55, 157, 168, 0.6);
                 });
                 _selectedPage = 0;
                 },
@@ -188,7 +188,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
                 setState(() {
                   _starColor = Color.fromRGBO(244, 100, 82, 1);
                   _endColor = Color.fromRGBO(254, 126, 110, 1);
-                  _searchIconColor = _starColor;
+                  _searchBarItemsColor = Color.fromRGBO(244, 100, 82, 0.6);
                 });
                 _selectedPage = 1;
               },
@@ -204,7 +204,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
                 setState(() {
                   _starColor = Color.fromRGBO(113, 120, 211, 1);
                   _endColor = Color.fromRGBO(137, 143, 223, 1);
-                  _searchIconColor = _starColor;
+                  _searchBarItemsColor = Color.fromRGBO(113, 120, 211, 0.6);
                 });
                 _selectedPage = 2;
               },
@@ -235,13 +235,13 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
           decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Quiero explorar',
-              hintStyle: TextStyle(fontFamily: 'ProductSans', fontWeight: FontWeight.bold, color: Color.fromRGBO(55, 157, 168, 0.6)),
-              suffixIcon: FaIcon(FontAwesomeIcons.search, color: Color.fromRGBO(55, 157, 168, 0.6), size: 25.0)
+              hintStyle: TextStyle(fontFamily: 'ProductSans', fontWeight: FontWeight.bold, color: _searchBarItemsColor),
+              suffixIcon: FaIcon(FontAwesomeIcons.search, color: _starColor, size: 25.0)
           ),
           textAlign: TextAlign.start,
           keyboardType: TextInputType.text,
           textCapitalization: TextCapitalization.words,
-          style: TextStyle(height: 1.3, fontWeight: FontWeight.bold, fontSize: 19.5, color: _searchIconColor),
+          style: TextStyle(height: 1.3, fontWeight: FontWeight.bold, fontSize: 19.5, color: _searchBarItemsColor),
           enabled: !_isCollapsed ? true : false,
         ),
       ),

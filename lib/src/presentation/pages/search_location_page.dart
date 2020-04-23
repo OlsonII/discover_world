@@ -20,37 +20,39 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-              color: Colors.blue,
-              gradient: LinearGradient(
-                  colors: [
-                    _principalColor,
-                    _secondColor
-                  ],
-                  stops: [0.0, 0.9]
-              )
-          ),
-          child: Column(
-            children: <Widget>[
-              Expanded(child: Container()),
-              _buildSearchBar(),
-              SizedBox(height: _screenSize.height*0.04,),
-              FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
-                  ),
-                  onPressed: (){
-                    Navigator.pushReplacementNamed(context, '/details_location', arguments: _citySelected);
-                  },
-                  color: Colors.white,
-                  child: Text('Buscar', style: TextStyle(fontSize: 17.0, color: _principalColor)
-                  )
-              ),
-              Expanded(child: Container()),
-            ],
-          ),
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+            color: Colors.blue,
+            gradient: LinearGradient(
+                colors: [
+                  _principalColor,
+                  _secondColor
+                ],
+                stops: [0.0, 0.9]
+            )
+        ),
+        child: Column(
+          children: <Widget>[
+            Expanded(child: Container()),
+            _buildSearchBar(),
+            SizedBox(height: _screenSize.height*0.04,),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)
+                ),
+                onPressed: (){
+                  _citySelected != null ?
+                  Navigator.pushReplacementNamed(context, '/details_location', arguments: _citySelected)
+                  : null;
+                },
+                color: Colors.white,
+                child: Text('Buscar', style: TextStyle(fontSize: 17.0, color: _principalColor)
+                )
+            ),
+            Expanded(child: Container()),
+          ],
+        ),
       ),
     );
   }

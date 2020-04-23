@@ -27,9 +27,9 @@ class Event {
     name: json["name"],
     description: json["description"],
     position: json['position'] != null ? Position.fromJson(json["position"]) : null,
-    initialDate: json["initialDate"],
-    endDate: json["endDate"],
-    initialHour: json["initialHour"],
-    endHour: json["endHour"],
+    initialDate: json["initial_date"],
+    endDate: json["end_date"],
+    initialHour: json["initial_hour"],
+    endHour: json["end_hour"],
   );
 }

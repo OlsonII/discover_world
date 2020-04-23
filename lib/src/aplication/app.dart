@@ -1,3 +1,5 @@
+import 'package:discover_world/src/presentation/pages/detail_event_page.dart';
+import 'package:discover_world/src/presentation/pages/detail_history_page.dart';
 import 'package:discover_world/src/presentation/pages/detail_location_page.dart';
 import 'package:discover_world/src/presentation/pages/detail_site_page.dart';
 import 'package:discover_world/src/presentation/pages/search_location_page.dart';
@@ -17,8 +19,10 @@ class App extends StatelessWidget {
       initialRoute: '/search_location',
       routes: {
         '/details_location'     : (BuildContext context) => DetailLocationPage(),
-        '/details_site' : (BuildContext context) => DetailSitePage(),
-        '/search_location' : (BuildContext context) => SearchLocationPage()
+        '/details_site'         : (BuildContext context) => DetailSitePage(),
+        '/details_event'        : (BuildContext context) => DetailEventPage(),
+        '/details_history'      : (BuildContext context) => DetailHistoryPage(),
+        '/search_location'      : (BuildContext context) => SearchLocationPage()
       },
     );
   }

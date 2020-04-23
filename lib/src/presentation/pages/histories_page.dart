@@ -35,6 +35,7 @@ class HistoriesPage extends StatelessWidget {
             ],
           ),
         ),
+        onTap: () => Navigator.pushNamed(context, '/details_history', arguments: history),
       ),
     );
   }

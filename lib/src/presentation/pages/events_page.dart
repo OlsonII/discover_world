@@ -35,6 +35,7 @@ class EventsPage extends StatelessWidget {
             ],
           ),
         ),
+        onTap: () => Navigator.pushNamed(context, '/details_event', arguments: event),
       ),
     );
   }

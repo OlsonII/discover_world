@@ -23,6 +23,9 @@ class SitesPage extends StatelessWidget {
       child: GestureDetector(
         child: Card(
           elevation: 3.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
           child: Column(
             children: <Widget>[
               Container(
@@ -31,13 +34,13 @@ class SitesPage extends StatelessWidget {
               ),
               ListTile(
                 title: Text(site.name, style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text(site.description),
+                subtitle: Text(site.type),
                 trailing: Icon(Icons.info),
               ),
             ],
           ),
         ),
-        onTap: () => Navigator.of(context).pushNamed('/details_site', arguments: {site}),
+        onTap: () => Navigator.of(context).pushNamed('/details_site', arguments: site),
       ),
     );
   }
