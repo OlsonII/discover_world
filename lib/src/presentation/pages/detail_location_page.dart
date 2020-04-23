@@ -103,7 +103,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Mapa', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white))),
-                onPressed: (){},
+                onPressed: () => Navigator.pushNamed(context, '/location_map'),
               ),
             ),
             Container(

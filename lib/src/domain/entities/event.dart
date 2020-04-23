@@ -32,4 +32,5 @@ class Event {
     initialHour: json["initial_hour"],
     endHour: json["end_hour"],
   );
+
 }
