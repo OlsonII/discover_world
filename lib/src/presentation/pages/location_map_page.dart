@@ -31,7 +31,10 @@ class _LocationMapPageState extends State<LocationMapPage> {
     mapsBloc.sendMapEvent.add(GetPosition());
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            backgroundColor: Color.fromRGBO(55, 157, 168, 1),
+            elevation: 5.0,
+          ),
           body: _buildMap()
       ),
     );

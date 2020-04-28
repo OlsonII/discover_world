@@ -4,6 +4,7 @@ import 'package:discover_world/src/aplication/bloc/location_state.dart';
 import 'package:discover_world/src/presentation/pages/events_page.dart';
 import 'package:discover_world/src/presentation/pages/histories_page.dart';
 import 'package:discover_world/src/presentation/pages/sites_page.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class DetailLocationPage extends StatefulWidget {
   _DetailLocationPageState createState() => _DetailLocationPageState();
 }
 
-class _DetailLocationPageState extends State<DetailLocationPage> {
+class _DetailLocationPageState extends State<DetailLocationPage> with SingleTickerProviderStateMixin {
 
   Size _screenSize;
   bool _isCollapsed = false;
@@ -29,6 +30,13 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
   Color _starColor = Color.fromRGBO(55, 157, 168, 1);
   Color _endColor = Color.fromRGBO(99, 196, 207, 1);
   Color _searchBarItemsColor = Color.fromRGBO(55, 157, 168, 0.6);
+  AnimationController _buttonMenuAnimationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _buttonMenuAnimationController = AnimationController(duration: _animationDuration, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +121,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Explorar otra', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white))),
-                onPressed: (){},
+                onPressed: () => Navigator.pushReplacementNamed(context, '/search_location'),
               ),
             ),
             Container(
@@ -123,7 +131,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Salir', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white))),
-                onPressed: (){},
+                onPressed: () => SystemNavigator.pop(),
               ),
             ),
           ],
@@ -140,11 +148,17 @@ class _DetailLocationPageState extends State<DetailLocationPage> {
               GestureDetector(
                 child: Container(
                     margin: EdgeInsets.only(top: 50.0, left: 17.0, right: 17.0),
-                    child: Icon(Icons.menu, size: 27.0, color: Colors.white)
+                    child: AnimatedIcon(
+                      icon: AnimatedIcons.menu_arrow,
+                      progress: _buttonMenuAnimationController,
+                      color: Colors.white,
+                      size: 27.0,
+                    ), //Icon(Icons.menu, size: 27.0, color: Colors.white)
                 ),
                 onTap: (){
                   setState(() {
                     _isCollapsed = !_isCollapsed;
+                    _isCollapsed ? _buttonMenuAnimationController.forward() : _buttonMenuAnimationController.reverse();
                   });
                 },
               ),
