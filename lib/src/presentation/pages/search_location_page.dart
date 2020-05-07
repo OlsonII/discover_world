@@ -44,6 +44,7 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
                 onPressed: (){
                   _citySelected != null ?
                   Navigator.pushReplacementNamed(context, '/details_location', arguments: _citySelected)
+                  // ignore: unnecessary_statements
                   : null;
                 },
                 color: Colors.white,
