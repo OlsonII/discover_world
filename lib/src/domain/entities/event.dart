@@ -10,6 +10,7 @@ class Event {
   String endDate;
   String initialHour;
   String endHour;
+  String image;
 
   Event({
     this.id,
@@ -20,6 +21,7 @@ class Event {
     this.endDate,
     this.initialHour,
     this.endHour,
+    this.image
   });
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
@@ -31,6 +33,7 @@ class Event {
     endDate: json["end_date"],
     initialHour: json["initial_hour"],
     endHour: json["end_hour"],
+    image: json["image"]
   );
 
 }

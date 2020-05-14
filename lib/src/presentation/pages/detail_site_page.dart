@@ -113,6 +113,7 @@ class _DetailSitePageState extends State<DetailSitePage> {
         onPressed: (){
           setState(() {
             _selectedSubPage = 2;
+            Navigator.pushNamed(context, '/location_map');
           });
         },
       ),
@@ -167,9 +168,15 @@ class _DetailSitePageState extends State<DetailSitePage> {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(bottom: 10.0),
-            height: _screenSize.height*0.25,
-            child: Image.asset('assets/images.png'),
+              margin: EdgeInsets.only(bottom: 10.0),
+              height: _screenSize.height*0.25,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+                  image: DecorationImage(
+                    image: NetworkImage(_site.image),
+                    fit: BoxFit.cover,
+                  )
+              )
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),

@@ -25,6 +25,10 @@ class LocationBloc {
       final location = await _repository.getLocation(event.locationName);
       _locationOutput.add(LocationLoaded(location: location));
     }
+    else if(event is GetLocations){
+      final locations = await _repository.getLocations();
+      _locationOutput.add(LocationsLoaded(locations: locations));
+    }
   }
 
   void dispose(){

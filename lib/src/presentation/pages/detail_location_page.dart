@@ -1,6 +1,7 @@
 import 'package:discover_world/src/aplication/bloc/location_bloc.dart';
 import 'package:discover_world/src/aplication/bloc/location_event.dart';
 import 'package:discover_world/src/aplication/bloc/location_state.dart';
+import 'package:discover_world/src/domain/entities/site.dart';
 import 'package:discover_world/src/presentation/pages/events_page.dart';
 import 'package:discover_world/src/presentation/pages/histories_page.dart';
 import 'package:discover_world/src/presentation/pages/sites_page.dart';
@@ -23,8 +24,8 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
 
   Size _screenSize;
   bool _isCollapsed = false;
-  Duration _animationDuration = Duration(milliseconds: 400);
-  String locationSelected = 'Valledupar';
+  Duration _animationDuration = Duration(milliseconds: 300);
+  String _locationSelected = 'Valledupar';
   List<Widget> _pages;
   int _selectedPage = 0;
   Color _starColor = Color.fromRGBO(55, 157, 168, 1);
@@ -42,8 +43,8 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
   Widget build(BuildContext context) {
 
     _screenSize = MediaQuery.of(context).size;
-//    locationSelected = ModalRoute.of(context).settings.arguments;
-    locationBloc.sendLocationEvent.add(GetLocation(locationName: locationSelected));
+    _locationSelected = ModalRoute.of(context).settings.arguments;
+    locationBloc.sendLocationEvent.add(GetLocation(locationName: _locationSelected));
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -116,12 +117,33 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
             ),
             Container(
               height: _screenSize.height*0.04,
+              width: _screenSize.width*0.8,
+              child: FlatButton(
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Centros de transporte', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white))),
+                    onPressed: (){},
+//                onPressed: () => Navigator.pushNamed(context, '/location_map'),
+              ),
+            ),
+            Container(
+              height: _screenSize.height*0.04,
               width: _screenSize.width*0.5,
               child: FlatButton(
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Explorar otra', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white))),
                 onPressed: () => Navigator.pushReplacementNamed(context, '/search_location'),
+              ),
+            ),
+            Container(
+              height: _screenSize.height*0.04,
+              width: _screenSize.width*0.5,
+              child: FlatButton(
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Mas informacion', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white))),
+                onPressed: () => Navigator.pushReplacementNamed(context, '/detail_info_location', arguments: _locationSelected),
               ),
             ),
             Container(
@@ -162,7 +184,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
                   });
                 },
               ),
-              _buildSearchBar(),
+              _buildSearchBar()
             ],
           ),
           _buildButtonsMenu()
@@ -171,13 +193,11 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
   }
 
   Widget _buildButtonsMenu() {
-    return Container(
+    return _isCollapsed ? Container(padding: EdgeInsets.only(top: 20.0),) : Container(
       margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Expanded(
-            child: Container(),
-          ),
           FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)
@@ -200,34 +220,55 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
               ),
               onPressed: (){
                 setState(() {
-                  _starColor = Color.fromRGBO(244, 100, 82, 1);
-                  _endColor = Color.fromRGBO(254, 126, 110, 1);
-                  _searchBarItemsColor = Color.fromRGBO(244, 100, 82, 0.6);
+                  _starColor = Color.fromRGBO(55, 157, 168, 1);
+                  _endColor = Color.fromRGBO(99, 196, 207, 1);
+                  _searchBarItemsColor = Color.fromRGBO(55, 157, 168, 0.6);
                 });
                 _selectedPage = 1;
               },
               color: _selectedPage == 1 ? Colors.white : Colors.transparent,
-              child: Text('Eventos', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: _selectedPage == 1 ? _starColor = Color.fromRGBO(244, 100, 82, 1) : Colors.white)
+              child: Text('Culturales', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: _selectedPage == 1 ? _starColor = Color.fromRGBO(55, 157, 168, 1) : Colors.white)
               )
           ),
           FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0)
-            ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)
+              ),
               onPressed: (){
                 setState(() {
-                  _starColor = Color.fromRGBO(113, 120, 211, 1);
-                  _endColor = Color.fromRGBO(137, 143, 223, 1);
-                  _searchBarItemsColor = Color.fromRGBO(113, 120, 211, 0.6);
+                  _starColor = Color.fromRGBO(244, 100, 82, 1);
+                  _endColor = Color.fromRGBO(254, 126, 110, 1);
+                  _searchBarItemsColor = Color.fromRGBO(244, 100, 82, 0.6);
                 });
                 _selectedPage = 2;
               },
               color: _selectedPage == 2 ? Colors.white : Colors.transparent,
-              child: Text('Historias', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: _selectedPage == 2 ? _starColor = Color.fromRGBO(113, 120, 211, 1) : Colors.white)
+              child: Text('Eventos', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: _selectedPage == 2 ? _starColor = Color.fromRGBO(244, 100, 82, 1) : Colors.white)
               )
           ),
-          Expanded(
-            child: Container(),
+          Flexible(
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)
+              ),
+                onPressed: (){
+                  setState(() {
+                    _starColor = Color.fromRGBO(113, 120, 211, 1);
+                    _endColor = Color.fromRGBO(137, 143, 223, 1);
+                    _searchBarItemsColor = Color.fromRGBO(113, 120, 211, 0.6);
+                  });
+                  _selectedPage = 3;
+                },
+                color: _selectedPage == 3 ? Colors.white : Colors.transparent,
+                child: Text('Historias',
+                    style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight:
+                        FontWeight.bold,
+                        color: _selectedPage == 3 ? _starColor = Color.fromRGBO(113, 120, 211, 1) : Colors.white
+                    )
+                )
+            ),
           ),
         ],
       ),
@@ -275,29 +316,33 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
           // ignore: missing_return
           builder: (BuildContext context, AsyncSnapshot snapshot){
             if(snapshot.data is LocationLoaded){
+              List<Site> sites = new List();
+              List<Site> cultural = new List();
+              snapshot.data.location.sites.forEach((site){
+                site.type == 'Centro Cultural' ? cultural.add(site) : sites.add(site);
 
+              });
               _pages = [
-                SitesPage(sitesOfLocationSelected: snapshot.data.location.sites),
+                SitesPage(sitesOfLocationSelected: sites),
+                SitesPage(sitesOfLocationSelected: cultural),
                 EventsPage(events: snapshot.data.location.events,),
                 HistoriesPage(histories: snapshot.data.location.histories),
               ];
 
-              switch(_selectedPage){
-                case 0:
-                  return _pages[_selectedPage];
-                  break;
-                case 1:
-                  return _pages[_selectedPage];
-                  break;
-                case 2:
-                  return _pages[_selectedPage];
-                  break;
-              }
+              if(_isCollapsed) return Container();
+
+              return _pages[_selectedPage];
             }
             return Container();
           },
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    //locationBloc.dispose();
+    super.dispose();
   }
 }

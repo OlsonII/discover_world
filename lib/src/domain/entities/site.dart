@@ -9,6 +9,7 @@ class Site {
   Position position;
   String direction;
   String type;
+  String image;
   List<Activity> activities;
 
   Site({
@@ -18,6 +19,7 @@ class Site {
     this.position,
     this.direction,
     this.type,
+    this.image,
     this.activities,
   });
 
@@ -35,6 +37,7 @@ class Site {
       position: json['position'] != null ?  Position.fromJson(json["position"]) : null,
       direction: json["direction"],
       type: json["type"],
+      image: json["image"],
       activities: activitiesList,
     );
   }

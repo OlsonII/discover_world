@@ -1,3 +1,6 @@
+import 'package:discover_world/src/aplication/bloc/location_bloc.dart';
+import 'package:discover_world/src/aplication/bloc/location_event.dart';
+import 'package:discover_world/src/aplication/bloc/location_state.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -12,11 +15,12 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
   Size _screenSize;
   Color _principalColor = Color.fromRGBO(55, 157, 168, 1);
   Color _secondColor = Color.fromRGBO(99, 196, 207, 1);
-  String _citySelected;
+  String _locationSelected;
 
   @override
   Widget build(BuildContext context) {
     _screenSize = MediaQuery.of(context).size;
+    locationBloc.sendLocationEvent.add(GetLocations());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -34,24 +38,48 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
         ),
         child: Column(
           children: <Widget>[
-            Expanded(child: Container()),
             _buildSearchBar(),
             SizedBox(height: _screenSize.height*0.04,),
-            FlatButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  color: Colors.white
                 ),
-                onPressed: (){
-                  _citySelected != null ?
-                  Navigator.pushReplacementNamed(context, '/details_location', arguments: _citySelected)
-                  // ignore: unnecessary_statements
-                  : null;
-                },
-                color: Colors.white,
-                child: Text('Buscar', style: TextStyle(fontSize: 17.0, color: _principalColor)
-                )
+                child: StreamBuilder(
+                  stream: locationBloc.locationStream,
+                  builder: (context, snapshot){
+                    if(snapshot.data is LocationsLoaded){
+                      return ListView.builder(
+                        itemCount: snapshot.data.locations.length,
+                          itemBuilder: (context, item) => _buildItem(context, snapshot.data.locations[item])
+                      );
+                    }
+                    return Center(child: CircularProgressIndicator());
+                  },
+                ),
+              ),
             ),
-            Expanded(child: Container()),
+            SizedBox(height: _screenSize.height*0.02,),
+            Container(
+              width: _screenSize.width*0.5,
+              child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)
+                  ),
+                  onPressed: (){
+                    _locationSelected != null ?
+                    Navigator.pushReplacementNamed(context, '/detail_info_location', arguments: _locationSelected)
+                    // ignore: unnecessary_statements
+                    : null;
+                  },
+                  color: Colors.white,
+                  child: Text('Explorar', style: TextStyle(fontSize: 17.0, color: _principalColor)
+                  )
+              ),
+            ),
+            SizedBox(height: _screenSize.height*0.02,),
+
           ],
         ),
       ),
@@ -77,7 +105,7 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
         ),
         onChanged: (value){
           setState(() {
-            _citySelected = value;
+            _locationSelected = value;
           });
         },
         textCapitalization: TextCapitalization.words,
@@ -85,6 +113,17 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
         keyboardType: TextInputType.text,
         style: TextStyle(height: 1.3, fontWeight: FontWeight.bold, fontSize: 19.5, color: _principalColor),
       ),
+    );
+  }
+
+  _buildItem(BuildContext context, item) {
+    return ListTile(
+      title: Text('${item.name} - ${item.department} (${item.type})', style: TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text(item.description),
+      leading: Image(image: NetworkImage(item.image)),
+      onTap: (){
+        Navigator.pushReplacementNamed(context, '/detail_info_location', arguments: item.name);
+      },
     );
   }
 }

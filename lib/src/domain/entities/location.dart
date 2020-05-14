@@ -13,6 +13,7 @@ class Location {
   Position position;
   String department;
   String type;
+  String image;
   List<Event> events;
   List<History> histories;
   List<Site> sites;
@@ -24,6 +25,7 @@ class Location {
     this.position,
     this.department,
     this.type,
+    this.image,
     this.events,
     this.histories,
     this.sites,
@@ -51,6 +53,7 @@ class Location {
       position: json['position'] != null ? Position.fromJson(json["position"]) : null,
       department: json["department"],
       type: json["type"],
+      image: json["image"],
       events: eventList,
       histories: historiesList,
       sites: sitesList,

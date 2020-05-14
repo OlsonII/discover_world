@@ -1,5 +1,6 @@
 import 'package:discover_world/src/presentation/pages/detail_event_page.dart';
 import 'package:discover_world/src/presentation/pages/detail_history_page.dart';
+import 'package:discover_world/src/presentation/pages/detail_info_location_page.dart';
 import 'package:discover_world/src/presentation/pages/detail_location_page.dart';
 import 'package:discover_world/src/presentation/pages/detail_site_page.dart';
 import 'package:discover_world/src/presentation/pages/location_map_page.dart';
@@ -47,7 +48,8 @@ class App extends StatelessWidget {
         '/details_event'        : (BuildContext context) => DetailEventPage(),
         '/details_history'      : (BuildContext context) => DetailHistoryPage(),
         '/search_location'      : (BuildContext context) => SearchLocationPage(),
-        '/location_map'         : (BuildContext context) => LocationMapPage()
+        '/location_map'         : (BuildContext context) => LocationMapPage(),
+        '/detail_info_location' : (BuildContext context) => DetailInfoLocationPage()
       },
     );
   }

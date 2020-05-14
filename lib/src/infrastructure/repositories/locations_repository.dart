@@ -30,4 +30,28 @@ class LocationsRepository implements ILocationsRepository {
 
     return location;
   }
+
+
+  getLocations() async {
+    List<Location> locations = new List();
+
+    await locationsDocument.once().then((DataSnapshot snapshot){
+
+
+      var locationsIds = snapshot.value.keys;
+      var locationsValue = snapshot.value;
+
+
+      for(var locationId in locationsIds){
+        var location = new Map<String, dynamic>.from(locationsValue[locationId]);
+
+        locations.add(new Location.fromJson(location));
+      }
+
+    }).catchError((onError){
+      print('Error: ${onError}');
+    });
+
+    return locations;
+  }
 }

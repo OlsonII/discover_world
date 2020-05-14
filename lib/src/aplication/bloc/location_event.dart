@@ -9,9 +9,7 @@ abstract class LocationEvent extends Equatable{
 
 //TODO: AUN NO ES SEGURA SU IMPLEMENTACION
 class GetLocations extends LocationEvent{
-  final List<Location> locations;
-
-  const GetLocations({@required this.locations}) : assert(locations != null);
+  final List<Location> locations = [];
 
   @override
   List<Object> get props => [locations];
