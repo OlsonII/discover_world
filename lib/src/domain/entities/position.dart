@@ -1,8 +1,8 @@
 
 class Position {
 
-  int latitude;
-  int longitude;
+  double latitude;
+  double longitude;
 
   Position({
     this.latitude,

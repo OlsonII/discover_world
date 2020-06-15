@@ -46,11 +46,13 @@ class Location {
     list = json['histories'] as List;
     list != null ? historiesList = list.map((history) => History.fromJson(new Map<String, dynamic>.from(history))).toList() : [];
 
+    var pos = json['position'] != null ? new Position(latitude: json['position']['latitude'], longitude: json['position']['longitude']) : null;
+
     return Location(
       id: json["id"],
       name: json["name"],
       description: json["description"],
-      position: json['position'] != null ? Position.fromJson(json["position"]) : null,
+      position: pos,
       department: json["department"],
       type: json["type"],
       image: json["image"],

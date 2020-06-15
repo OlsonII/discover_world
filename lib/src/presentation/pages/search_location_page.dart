@@ -1,6 +1,8 @@
 import 'package:discover_world/src/aplication/bloc/location_bloc.dart';
 import 'package:discover_world/src/aplication/bloc/location_event.dart';
 import 'package:discover_world/src/aplication/bloc/location_state.dart';
+import 'package:discover_world/src/domain/entities/location.dart';
+import 'package:discover_world/src/infrastructure/utilities/search_system.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -16,6 +18,7 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
   Color _principalColor = Color.fromRGBO(55, 157, 168, 1);
   Color _secondColor = Color.fromRGBO(99, 196, 207, 1);
   String _locationSelected;
+  List<Location> _locations;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +53,10 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
                   stream: locationBloc.locationStream,
                   builder: (context, snapshot){
                     if(snapshot.data is LocationsLoaded){
+                      _locations = snapshot.data.locations;
                       return ListView.builder(
-                        itemCount: snapshot.data.locations.length,
-                          itemBuilder: (context, item) => _buildItem(context, snapshot.data.locations[item])
+                        itemCount: _locations.length,
+                          itemBuilder: (context, item) => _buildItem(context, _locations[item])
                       );
                     }
                     return Center(child: CircularProgressIndicator());
@@ -87,32 +91,47 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
   }
 
   Widget _buildSearchBar() {
-    return Container(
-      width: _screenSize.width*0.8,
-      height: _screenSize.height*0.06,
-      margin: EdgeInsets.only(top: 50.0, right: 10.0),
-      padding: EdgeInsets.only(left: 15.0, right: 3.0, top: 10.0),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          color: Color.fromRGBO(255, 255, 255, 1)
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Quiero explorar',
-          hintStyle: TextStyle(fontFamily: 'ProductSans', fontWeight: FontWeight.bold, color: Color.fromRGBO(55, 157, 168, 0.6)),
-          suffixIcon: FaIcon(FontAwesomeIcons.search, color: _principalColor)
+    return Row(
+      children: [
+        Container(
+          width: _screenSize.width*0.7,
+          height: _screenSize.height*0.06,
+          margin: EdgeInsets.only(top: 50.0, right: 7.0, left: 17.0),
+          padding: EdgeInsets.only(left: 15.0, right: 3.0, top: 10.0),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              color: Color.fromRGBO(255, 255, 255, 1)
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Quiero explorar',
+                hintStyle: TextStyle(fontFamily: 'ProductSans', fontWeight: FontWeight.bold, color: Color.fromRGBO(55, 157, 168, 0.6)),
+//                suffixIcon: FaIcon(FontAwesomeIcons.search, color: _principalColor)
+            ),
+            onChanged: (value){
+              _locationSelected = value;
+            },
+            textCapitalization: TextCapitalization.words,
+            textAlign: TextAlign.start,
+            keyboardType: TextInputType.text,
+            style: TextStyle(height: 1.3, fontWeight: FontWeight.bold, fontSize: 19.5, color: _principalColor),
+          ),
         ),
-        onChanged: (value){
-          setState(() {
-            _locationSelected = value;
-          });
-        },
-        textCapitalization: TextCapitalization.words,
-        textAlign: TextAlign.start,
-        keyboardType: TextInputType.text,
-        style: TextStyle(height: 1.3, fontWeight: FontWeight.bold, fontSize: 19.5, color: _principalColor),
-      ),
+        Expanded(child: Container(),),
+        Container(
+          margin: EdgeInsets.only(top: 50.0, right: 10.0),
+          child: FlatButton(
+              onPressed: (){
+                _locationSelected != null ?
+                Navigator.pushReplacementNamed(context, '/detail_info_location', arguments: _locationSelected)
+                // ignore: unnecessary_statements
+                    : null;
+              },
+              child: FaIcon(FontAwesomeIcons.search, color: Colors.white)
+          ),
+        )
+      ],
     );
   }
 
@@ -125,5 +144,10 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
         Navigator.pushReplacementNamed(context, '/detail_info_location', arguments: item.name);
       },
     );
+  }
+
+  _search(String name){
+    var searcher = new SearchSystem(null, _locations);
+    return searcher.searchLocationByName(name);
   }
 }

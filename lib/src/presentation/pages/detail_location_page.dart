@@ -1,7 +1,9 @@
 import 'package:discover_world/src/aplication/bloc/location_bloc.dart';
 import 'package:discover_world/src/aplication/bloc/location_event.dart';
 import 'package:discover_world/src/aplication/bloc/location_state.dart';
+import 'package:discover_world/src/domain/entities/location.dart';
 import 'package:discover_world/src/domain/entities/site.dart';
+import 'package:discover_world/src/infrastructure/utilities/search_system.dart';
 import 'package:discover_world/src/presentation/pages/events_page.dart';
 import 'package:discover_world/src/presentation/pages/histories_page.dart';
 import 'package:discover_world/src/presentation/pages/sites_page.dart';
@@ -25,13 +27,15 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
   Size _screenSize;
   bool _isCollapsed = false;
   Duration _animationDuration = Duration(milliseconds: 300);
-  String _locationSelected = 'Valledupar';
+  String _nameLocationSelected = 'Valledupar';
+  Location _location;
   List<Widget> _pages;
   int _selectedPage = 0;
   Color _starColor = Color.fromRGBO(55, 157, 168, 1);
   Color _endColor = Color.fromRGBO(99, 196, 207, 1);
   Color _searchBarItemsColor = Color.fromRGBO(55, 157, 168, 0.6);
   AnimationController _buttonMenuAnimationController;
+  String _stringToSearch = "";
 
   @override
   void initState() {
@@ -43,8 +47,8 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
   Widget build(BuildContext context) {
 
     _screenSize = MediaQuery.of(context).size;
-    _locationSelected = ModalRoute.of(context).settings.arguments;
-    locationBloc.sendLocationEvent.add(GetLocation(locationName: _locationSelected));
+    _nameLocationSelected = ModalRoute.of(context).settings.arguments;
+    locationBloc.sendLocationEvent.add(GetLocation(locationName: _nameLocationSelected));
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -143,7 +147,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Mas informacion', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white))),
-                onPressed: () => Navigator.pushReplacementNamed(context, '/detail_info_location', arguments: _locationSelected),
+                onPressed: () => Navigator.pushReplacementNamed(context, '/detail_info_location', arguments: _nameLocationSelected),
               ),
             ),
             Container(
@@ -184,7 +188,20 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
                   });
                 },
               ),
-              _buildSearchBar()
+              _buildSearchBar(),
+              Container(
+                margin: EdgeInsets.only(top: 50.0, right: 10.0),
+                width: _screenSize.width*0.15,
+                child: FlatButton(
+                    onPressed: (){
+                      //TODO: IMPLEMENTAR BUSCAR AQUI
+                      setState(() {
+                        _searchSystem();
+                      });
+                    },
+                    child: FaIcon(FontAwesomeIcons.search, color: Colors.white)
+                ),
+              )
             ],
           ),
           _buildButtonsMenu()
@@ -193,10 +210,12 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
   }
 
   Widget _buildButtonsMenu() {
-    return _isCollapsed ? Container(padding: EdgeInsets.only(top: 20.0),) : Container(
-      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height*0.05,
+      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      child: ListView(
+        scrollDirection: Axis.horizontal,
         children: <Widget>[
           FlatButton(
               shape: RoundedRectangleBorder(
@@ -246,29 +265,27 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
               child: Text('Eventos', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: _selectedPage == 2 ? _starColor = Color.fromRGBO(244, 100, 82, 1) : Colors.white)
               )
           ),
-          Flexible(
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0)
-              ),
-                onPressed: (){
-                  setState(() {
-                    _starColor = Color.fromRGBO(113, 120, 211, 1);
-                    _endColor = Color.fromRGBO(137, 143, 223, 1);
-                    _searchBarItemsColor = Color.fromRGBO(113, 120, 211, 0.6);
-                  });
-                  _selectedPage = 3;
-                },
-                color: _selectedPage == 3 ? Colors.white : Colors.transparent,
-                child: Text('Historias',
-                    style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight:
-                        FontWeight.bold,
-                        color: _selectedPage == 3 ? _starColor = Color.fromRGBO(113, 120, 211, 1) : Colors.white
-                    )
-                )
+          FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0)
             ),
+              onPressed: (){
+                setState(() {
+                  _starColor = Color.fromRGBO(113, 120, 211, 1);
+                  _endColor = Color.fromRGBO(137, 143, 223, 1);
+                  _searchBarItemsColor = Color.fromRGBO(113, 120, 211, 0.6);
+                });
+                _selectedPage = 3;
+              },
+              color: _selectedPage == 3 ? Colors.white : Colors.transparent,
+              child: Text('Historias',
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight:
+                      FontWeight.bold,
+                      color: _selectedPage == 3 ? _starColor = Color.fromRGBO(113, 120, 211, 1) : Colors.white
+                  )
+              )
           ),
         ],
       ),
@@ -278,7 +295,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
   Widget _buildSearchBar() {
     return Expanded(
       child: Container(
-        width: _screenSize.width*0.8,
+//        width: _screenSize.width*0.8,
         height: _screenSize.height*0.06,
         margin: EdgeInsets.only(top: 50.0, right: 10.0),
         padding: EdgeInsets.only(left: 15.0, right: 3.0, top: 10.0),
@@ -291,13 +308,20 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
               border: InputBorder.none,
               hintText: 'Quiero explorar',
               hintStyle: TextStyle(fontFamily: 'ProductSans', fontWeight: FontWeight.bold, color: _searchBarItemsColor),
-              suffixIcon: FaIcon(FontAwesomeIcons.search, color: _starColor, size: 25.0)
+//              suffixIcon: FaIcon(FontAwesomeIcons.search, color: _starColor, size: 25.0)
           ),
           textAlign: TextAlign.start,
           keyboardType: TextInputType.text,
           textCapitalization: TextCapitalization.words,
           style: TextStyle(height: 1.3, fontWeight: FontWeight.bold, fontSize: 19.5, color: _searchBarItemsColor),
           enabled: !_isCollapsed ? true : false,
+          onChanged: (value){
+            if(value == "")
+              setState(() {
+                _pages = null;
+              });
+            _stringToSearch = value;
+          },
         ),
       ),
     );
@@ -316,18 +340,21 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
           // ignore: missing_return
           builder: (BuildContext context, AsyncSnapshot snapshot){
             if(snapshot.data is LocationLoaded){
+              _location = snapshot.data.location;
               List<Site> sites = new List();
               List<Site> cultural = new List();
               snapshot.data.location.sites.forEach((site){
                 site.type == 'Centro Cultural' ? cultural.add(site) : sites.add(site);
-
               });
-              _pages = [
-                SitesPage(sitesOfLocationSelected: sites),
-                SitesPage(sitesOfLocationSelected: cultural),
-                EventsPage(events: snapshot.data.location.events,),
-                HistoriesPage(histories: snapshot.data.location.histories),
-              ];
+
+              if(_pages == null){
+                _pages = [
+                  SitesPage(sitesOfLocationSelected: sites),
+                  SitesPage(sitesOfLocationSelected: cultural),
+                  EventsPage(events: snapshot.data.location.events,),
+                  HistoriesPage(histories: snapshot.data.location.histories),
+                ];
+              }
 
               if(_isCollapsed) return Container();
 
@@ -339,6 +366,29 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
       ),
     );
   }
+
+  _searchSystem(){
+    if(_stringToSearch == ""){
+      setState(() {
+        _pages = null;
+      });
+    }else{
+      var searcher = new SearchSystem(_location, null);
+      if(_pages[_selectedPage] is SitesPage){
+        var resultByName = searcher.searchSiteByName(_stringToSearch);
+        var resultByActivity = searcher.searchSiteByActivity(_stringToSearch);
+        var resultByType = searcher.searchSiteByType(_stringToSearch);
+        if(resultByName.length > 0){
+          _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByName);
+        }else if(resultByActivity.length > 0){
+          _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByActivity);
+        }else if(resultByType.length > 0){
+          _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByType);
+        }
+      }
+    }
+  }
+
 
   @override
   void dispose() {

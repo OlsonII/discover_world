@@ -26,15 +26,18 @@ class Site {
   factory Site.fromJson(Map<String, dynamic> json) {
 
     List<Activity> activitiesList;
+    List<dynamic> positionList;
 
     var list = json['activities'] as List;
     list != null ? activitiesList = list.map((activity) => Activity.fromJson(new Map<String, dynamic>.from(activity))).toList() : [];
+
+    var pos = json['position'] != null ? new Position(latitude: json['position']['latitude'], longitude: json['position']['longitude']) : null;
 
     return Site(
       id: json["id"],
       name: json["name"],
       description: json["description"],
-      position: json['position'] != null ?  Position.fromJson(json["position"]) : null,
+      position: pos,
       direction: json["direction"],
       type: json["type"],
       image: json["image"],
