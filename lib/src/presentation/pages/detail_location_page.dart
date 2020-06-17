@@ -4,6 +4,7 @@ import 'package:discover_world/src/aplication/bloc/location_state.dart';
 import 'package:discover_world/src/domain/entities/location.dart';
 import 'package:discover_world/src/domain/entities/site.dart';
 import 'package:discover_world/src/infrastructure/utilities/search_system.dart';
+import 'package:discover_world/src/presentation/colors/colors.dart';
 import 'package:discover_world/src/presentation/pages/events_page.dart';
 import 'package:discover_world/src/presentation/pages/histories_page.dart';
 import 'package:discover_world/src/presentation/pages/sites_page.dart';
@@ -31,8 +32,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
   Location _location;
   List<Widget> _pages;
   int _selectedPage = 0;
-  Color _starColor = Color.fromRGBO(55, 157, 168, 1);
-  Color _endColor = Color.fromRGBO(99, 196, 207, 1);
+  Color _startColor = ThemeColors.sitesColor;
   Color _searchBarItemsColor = Color.fromRGBO(55, 157, 168, 0.6);
   AnimationController _buttonMenuAnimationController;
   String _stringToSearch = "";
@@ -87,7 +87,8 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
         curve: Curves.easeIn,
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        color: _startColor,
+        /*decoration: BoxDecoration(
             gradient: LinearGradient(
                 colors: [
                   _starColor,
@@ -95,7 +96,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
                 ],
                 stops: [0.0, 0.95]
             )
-        )
+        )*/
     );
   }
 
@@ -116,7 +117,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Mapa', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white))),
-                onPressed: () => Navigator.pushNamed(context, '/location_map'),
+                onPressed: () => Navigator.pushNamed(context, '/location_map', arguments: {"Location": _location}),
               ),
             ),
             Container(
@@ -194,7 +195,6 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
                 width: _screenSize.width*0.15,
                 child: FlatButton(
                     onPressed: (){
-                      //TODO: IMPLEMENTAR BUSCAR AQUI
                       setState(() {
                         _searchSystem();
                       });
@@ -223,14 +223,17 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
               ),
               onPressed: (){
                 setState(() {
-                  _starColor = Color.fromRGBO(55, 157, 168, 1);
-                  _endColor = Color.fromRGBO(99, 196, 207, 1);
+                  _startColor = ThemeColors.sitesColor;
                   _searchBarItemsColor = Color.fromRGBO(55, 157, 168, 0.6);
                 });
                 _selectedPage = 0;
                 },
               color: _selectedPage == 0 ? Colors.white : Colors.transparent,
-              child: Text('Sitios', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: _selectedPage == 0 ? _starColor = Color.fromRGBO(55, 157, 168, 1) : Colors.white)
+              child: Text('Sitios',
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                      color: _selectedPage == 0 ? _startColor : Colors.white)
               )
           ),
           FlatButton(
@@ -239,14 +242,18 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
               ),
               onPressed: (){
                 setState(() {
-                  _starColor = Color.fromRGBO(55, 157, 168, 1);
-                  _endColor = Color.fromRGBO(99, 196, 207, 1);
+                  _startColor = ThemeColors.culturalsColor;
                   _searchBarItemsColor = Color.fromRGBO(55, 157, 168, 0.6);
                 });
                 _selectedPage = 1;
               },
               color: _selectedPage == 1 ? Colors.white : Colors.transparent,
-              child: Text('Culturales', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: _selectedPage == 1 ? _starColor = Color.fromRGBO(55, 157, 168, 1) : Colors.white)
+              child: Text('Culturales',
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                      color: _selectedPage == 1 ? _startColor : Colors.white
+                  )
               )
           ),
           FlatButton(
@@ -255,14 +262,17 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
               ),
               onPressed: (){
                 setState(() {
-                  _starColor = Color.fromRGBO(244, 100, 82, 1);
-                  _endColor = Color.fromRGBO(254, 126, 110, 1);
+                  _startColor = ThemeColors.eventsColor;
                   _searchBarItemsColor = Color.fromRGBO(244, 100, 82, 0.6);
                 });
                 _selectedPage = 2;
               },
               color: _selectedPage == 2 ? Colors.white : Colors.transparent,
-              child: Text('Eventos', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: _selectedPage == 2 ? _starColor = Color.fromRGBO(244, 100, 82, 1) : Colors.white)
+              child: Text('Eventos',
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                      color: _selectedPage == 2 ? _startColor : Colors.white)
               )
           ),
           FlatButton(
@@ -271,8 +281,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
             ),
               onPressed: (){
                 setState(() {
-                  _starColor = Color.fromRGBO(113, 120, 211, 1);
-                  _endColor = Color.fromRGBO(137, 143, 223, 1);
+                  _startColor = ThemeColors.historiesColor;
                   _searchBarItemsColor = Color.fromRGBO(113, 120, 211, 0.6);
                 });
                 _selectedPage = 3;
@@ -283,7 +292,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
                       fontSize: 15.0,
                       fontWeight:
                       FontWeight.bold,
-                      color: _selectedPage == 3 ? _starColor = Color.fromRGBO(113, 120, 211, 1) : Colors.white
+                      color: _selectedPage == 3 ? _startColor : Colors.white
                   )
               )
           ),
@@ -307,7 +316,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
           decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Quiero explorar',
-              hintStyle: TextStyle(fontFamily: 'ProductSans', fontWeight: FontWeight.bold, color: _searchBarItemsColor),
+              hintStyle: TextStyle(fontFamily: 'ProductSans', fontWeight: FontWeight.bold, color: _startColor),
 //              suffixIcon: FaIcon(FontAwesomeIcons.search, color: _starColor, size: 25.0)
           ),
           textAlign: TextAlign.start,
@@ -349,10 +358,10 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
 
               if(_pages == null){
                 _pages = [
-                  SitesPage(sitesOfLocationSelected: sites),
-                  SitesPage(sitesOfLocationSelected: cultural),
-                  EventsPage(events: snapshot.data.location.events,),
-                  HistoriesPage(histories: snapshot.data.location.histories),
+                  SitesPage(sitesOfLocationSelected: sites == null ? [] : sites),
+                  SitesPage(sitesOfLocationSelected: cultural == null ? [] : cultural),
+                  EventsPage(events: snapshot.data.location.events == null ? [] : snapshot.data.location.events,),
+                  HistoriesPage(histories: snapshot.data.location.histories == null ? [] : snapshot.data.location.histories),
                 ];
               }
 
@@ -385,6 +394,16 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
         }else if(resultByType.length > 0){
           _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByType);
         }
+      }else if(_pages[_selectedPage] is EventsPage){
+        var resultByName = searcher.searchEventByName(_stringToSearch);
+        if(resultByName.length > 0){
+          _pages[_selectedPage] = EventsPage(events: resultByName);
+        }
+      }else if(_pages[_selectedPage] is HistoriesPage){
+        var resultByName = searcher.searchHistoryByName(_stringToSearch);
+        if(resultByName.length > 0){
+          _pages[_selectedPage] = HistoriesPage(histories: resultByName);
+        }
       }
     }
   }
@@ -392,7 +411,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
 
   @override
   void dispose() {
-    //locationBloc.dispose();
+//    locationBloc.dispose();
     super.dispose();
   }
 }
