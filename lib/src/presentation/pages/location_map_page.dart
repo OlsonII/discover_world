@@ -12,15 +12,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationMapPage extends StatefulWidget {
 
-  /*CameraPosition cameraPosition;
-
-
-  LocationMapPage(LatLng position){
-    cameraPosition = new CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14.5);
-  }*/
-
   @override
   _LocationMapPageState createState() => _LocationMapPageState();
+
+  static GlobalKey scaffoldKey = new GlobalKey();
 }
 
 class _LocationMapPageState extends State<LocationMapPage> {
@@ -38,6 +33,21 @@ class _LocationMapPageState extends State<LocationMapPage> {
   final Set<Marker> _markers = Set();
   final Set<Polyline> _lines = Set();
 
+  BitmapDescriptor restaurantsIcon;
+  BitmapDescriptor culturalIcon;
+  BitmapDescriptor recreationIcon;
+  BitmapDescriptor transportIcon;
+  BitmapDescriptor comercialIcon;
+  BitmapDescriptor otherIcon;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _configureIconToMarker();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> arguments = ModalRoute.of(context).settings.arguments;
@@ -48,6 +58,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
     mapsBloc.sendMapEvent.add(GetPosition());
     return SafeArea(
       child: Scaffold(
+          key: LocationMapPage.scaffoldKey,
           appBar: AppBar(
             backgroundColor: ThemeColors.principalColor,
             elevation: 5.0,
@@ -61,7 +72,6 @@ class _LocationMapPageState extends State<LocationMapPage> {
   _mapPosition(Position pos){
     _cameraPosition = new CameraPosition(target: LatLng(pos.latitude, pos.longitude), zoom: 14.5);
     _coordinates = new LatLng(pos.latitude, pos.longitude);
-    _initMarkers();
   }
 
   _changeMapMode(){
@@ -111,7 +121,10 @@ class _LocationMapPageState extends State<LocationMapPage> {
 
   _onMapCreated(GoogleMapController controller){
     _controller = controller;
-    _changeMapMode();
+    setState(() {
+      _changeMapMode();
+      _initMarkers();
+    });
   }
 
   _initMarkers(){
@@ -119,10 +132,98 @@ class _LocationMapPageState extends State<LocationMapPage> {
       _markers.add(Marker(
         markerId: MarkerId(_markersIds.toString()),
         position: new LatLng(element.position.latitude, element.position.longitude),
-
+        icon: _selectIconByType(element.type),
+        onTap: (){
+          showDialog(
+              context: LocationMapPage.scaffoldKey.currentContext,
+              builder: (BuildContext context){
+                return AlertDialog(
+                  title: Text('${element.name}', style: TextStyle(fontWeight: FontWeight.bold),),
+                  content: Container(
+                    child: Column(
+                      children: [
+                        Text('${element.type}'),
+                        Text('${element.description}'),
+                        Text('${element.direction != null ? element.direction : ''}'),
+                        FadeInImage(
+                            placeholder: AssetImage('assets/empty.jpg'),
+                            image: NetworkImage(element.image))
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    FlatButton(
+                      child: Text('Cerrar'),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                );
+              }
+          );
+        }
       ));
       _markersIds++;
     });
+  }
+
+  _configureIconToMarker(){
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(20, 20)), 'assets/cooking.png')
+        .then((onValue) {
+      restaurantsIcon = onValue;
+    }).catchError((onError) => print('Error: $onError'));
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 5), 'assets/statue.png')
+        .then((onValue) {
+      culturalIcon = onValue;
+    }).catchError((onError) => print(onError));
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/kite.png')
+        .then((onValue) {
+      recreationIcon = onValue;
+    }).catchError((onError) => print(onError));
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/shopping-bag.png')
+        .then((onValue) {
+      comercialIcon = onValue;
+    }).catchError((onError) => print(onError));
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/travel-case.png')
+        .then((onValue) {
+      transportIcon = onValue;
+    }).catchError((onError) => print(onError));
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/shopping-bag.png')
+        .then((onValue) {
+      comercialIcon = onValue;
+    }).catchError((onError) => print(onError));
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/landscape.png')
+        .then((onValue) {
+      otherIcon = onValue;
+    }).catchError((onError) => print(onError));
+  }
+
+  _selectIconByType(String type){
+    switch(type){
+      case 'Restaurante':
+        return restaurantsIcon;
+      case 'Centro Cultural':
+        return culturalIcon;
+      case 'Centro recreativo':
+        return recreationIcon;
+      case 'Centro comercial':
+        return comercialIcon;
+      case 'Centro de transporte':
+        return transportIcon;
+    }
+    return otherIcon;
   }
 
   _addMarker(LatLng position){
@@ -152,12 +253,6 @@ class _LocationMapPageState extends State<LocationMapPage> {
           )
       );
     });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
   }
 
   @override

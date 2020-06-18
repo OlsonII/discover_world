@@ -1,7 +1,7 @@
 import 'package:discover_world/src/domain/entities/event.dart';
+import 'package:discover_world/src/presentation/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class DetailEventPage extends StatefulWidget {
   @override
@@ -12,8 +12,6 @@ class _DetailEventPageState extends State<DetailEventPage> {
 
   Size _screenSize;
   Event _event;
-  Color  _starColor = Color.fromRGBO(244, 100, 82, 1);
-  Color _endColor = Color.fromRGBO(254, 126, 110, 1);
   int _selectedSubPage = 0;
   List<Widget> _pages;
 
@@ -32,36 +30,36 @@ class _DetailEventPageState extends State<DetailEventPage> {
         body: Stack(
           children: <Widget>[
             _buildBackground(),
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  _buildPrincipalInformationContainer(),
-                  _buildSecondaryInformationContainer()
-                ],
-              ),
+            Column(
+              children: <Widget>[
+                _buildPrincipalInformationContainer(),
+                _buildSecondaryInformationContainer()
+              ],
             )
           ],
         )
     );
   }
 
-  Container _buildSecondaryInformationContainer() {
-    return Container(
-      width: double.infinity,
-      height: _screenSize.height*0.45,
-      margin: EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
-      padding: EdgeInsets.only(right: 10.0, left: 10.0, bottom: 10.0),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30.0)
-      ),
-      child: Column(
-        children: <Widget>[
-          _buildBodyTittle(),
-          _buildBodyButtons(),
-          SizedBox(height: _screenSize.height*0.02),
-          _buildContentBody()
-        ],
+  _buildSecondaryInformationContainer() {
+    return Expanded(
+      child: Container(
+        width: double.infinity,
+        height: _screenSize.height*0.45,
+        margin: EdgeInsets.only(top: 30.0, left: 0.0, right: 0.0),
+        padding: EdgeInsets.only(right: 10.0, left: 10.0, bottom: 10.0),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(topRight: Radius.circular(30.0), topLeft: Radius.circular(30.0))
+        ),
+        child: Column(
+          children: <Widget>[
+            _buildBodyTittle(),
+            _buildBodyButtons(),
+            SizedBox(height: _screenSize.height*0.02),
+            _buildContentBody()
+          ],
+        ),
       ),
     );
   }
@@ -71,7 +69,7 @@ class _DetailEventPageState extends State<DetailEventPage> {
       children: <Widget>[
         Expanded(child: Container(),),
         _buildInfoButton(),
-        _buildUbicationButton(),
+//        _buildUbicationButton(),
         Expanded(child: Container(),),
       ],
     );
@@ -142,9 +140,15 @@ class _DetailEventPageState extends State<DetailEventPage> {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(bottom: 10.0),
-            height: _screenSize.height*0.25,
-            child: Image.asset('assets/images.png'),
+              margin: EdgeInsets.only(bottom: 10.0),
+              height: _screenSize.height*0.25,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+                  image: DecorationImage(
+                    image: NetworkImage(_event.image),
+                    fit: BoxFit.cover,
+                  )
+              )
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -168,28 +172,15 @@ class _DetailEventPageState extends State<DetailEventPage> {
   Container _buildBackground() {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-            colors: [
-              _starColor,
-              _endColor
-            ],
-            stops: [0.0, 0.95]
-        ),
-
+        color: ThemeColors.principalColor
       ),
     );
   }
 
-  GradientAppBar _buildAppBar() {
-    return GradientAppBar(
-      gradient: LinearGradient(
-          colors: [
-            _starColor,
-            _endColor
-          ],
-          stops: [0.0, 0.95]
-      ),
-      elevation: 0.0,
+  Widget _buildAppBar() {
+    return AppBar(
+      backgroundColor: ThemeColors.principalColor,
+      leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: ThemeColors.iconsColors), onPressed: () => Navigator.of(context).pop()),
     );
   }
 

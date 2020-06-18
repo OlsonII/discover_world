@@ -1,7 +1,7 @@
 import 'package:discover_world/src/domain/entities/history.dart';
+import 'package:discover_world/src/presentation/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class DetailHistoryPage extends StatefulWidget {
   @override
@@ -12,8 +12,7 @@ class _DetailHistoryPageState extends State<DetailHistoryPage> {
 
   Size _screenSize;
   History _history;
-  Color  _starColor = Color.fromRGBO(113, 120, 211, 1);
-  Color _endColor = Color.fromRGBO(137, 143, 223, 1);
+  Color  _starColor = ThemeColors.principalColor;
   int _selectedSubPage = 0;
   List<Widget> _pages;
 
@@ -32,35 +31,35 @@ class _DetailHistoryPageState extends State<DetailHistoryPage> {
         body: Stack(
           children: <Widget>[
             _buildBackground(),
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  _buildPrincipalInformationContainer(),
-                  _buildSecondaryInformationContainer()
-                ],
-              ),
+            Column(
+              children: <Widget>[
+                _buildPrincipalInformationContainer(),
+                _buildSecondaryInformationContainer()
+              ],
             )
           ],
         )
     );
   }
 
-  Container _buildSecondaryInformationContainer() {
-    return Container(
-      width: double.infinity,
-      height: _screenSize.height*0.45,
-      margin: EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
-      padding: EdgeInsets.only(right: 10.0, left: 10.0, bottom: 10.0),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30.0)
-      ),
-      child: Column(
-        children: <Widget>[
-          _buildBodyTittle(),
-          SizedBox(height: _screenSize.height*0.002),
-          _buildInfoContainer()
-        ],
+  _buildSecondaryInformationContainer() {
+    return Expanded(
+      child: Container(
+        width: double.infinity,
+        height: _screenSize.height*0.45,
+        margin: EdgeInsets.only(top: 30.0, left: 0.0, right: 0.0),
+        padding: EdgeInsets.only(right: 10.0, left: 10.0, bottom: 10.0),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(topRight: Radius.circular(30.0), topLeft: Radius.circular(30.0))
+        ),
+        child: Column(
+          children: <Widget>[
+            _buildBodyTittle(),
+            SizedBox(height: _screenSize.height*0.002),
+            _buildInfoContainer()
+          ],
+        ),
       ),
     );
   }
@@ -86,9 +85,15 @@ class _DetailHistoryPageState extends State<DetailHistoryPage> {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(bottom: 10.0),
-            height: _screenSize.height*0.25,
-            child: Image.asset('assets/images.png'),
+              margin: EdgeInsets.only(bottom: 10.0),
+              height: _screenSize.height*0.25,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+                  image: DecorationImage(
+                    image: NetworkImage(_history.image),
+                    fit: BoxFit.cover,
+                  )
+              )
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -112,28 +117,15 @@ class _DetailHistoryPageState extends State<DetailHistoryPage> {
   Container _buildBackground() {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-            colors: [
-              _starColor,
-              _endColor
-            ],
-            stops: [0.0, 0.95]
-        ),
-
+        color: _starColor
       ),
     );
   }
 
-  GradientAppBar _buildAppBar() {
-    return GradientAppBar(
-      gradient: LinearGradient(
-          colors: [
-            _starColor,
-            _endColor
-          ],
-          stops: [0.0, 0.95]
-      ),
-      elevation: 0.0,
+  Widget _buildAppBar() {
+    return AppBar(
+      backgroundColor: ThemeColors.principalColor,
+      leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: ThemeColors.iconsColors), onPressed: () => Navigator.of(context).pop()),
     );
   }
 
@@ -143,7 +135,7 @@ class _DetailHistoryPageState extends State<DetailHistoryPage> {
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         child: Align(
           alignment: Alignment.topLeft,
-          child: Text(_history.content, style: TextStyle(fontSize: 16.0)),
+          child: Scrollbar(child: SingleChildScrollView(child: Text(_history.content, style: TextStyle(fontSize: 16.0)))),
         ),
       ),
     );

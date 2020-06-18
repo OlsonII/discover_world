@@ -136,21 +136,23 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
                   // ignore: unnecessary_statements
                       : null;
                 }else {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context){
-                        return AlertDialog(
-                          title: Text('Error', style: TextStyle(fontWeight: FontWeight.bold),),
-                          content: Text('No tenemos localizacion registrada con el nombre ${_locationSelected}'),
-                          actions: [
-                            FlatButton(
-                              child: Text('Cerrar'),
-                              onPressed: () => Navigator.of(context).pop(),
-                            )
-                          ],
-                        );
-                      }
-                  );
+                  if(_locationSelected != ""){
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text('Error', style: TextStyle(fontWeight: FontWeight.bold),),
+                            content: Text('No tenemos localizacion registrada con el nombre ${_locationSelected}'),
+                            actions: [
+                              FlatButton(
+                                child: Text('Cerrar'),
+                                onPressed: () => Navigator.of(context).pop(),
+                              )
+                            ],
+                          );
+                        }
+                    );
+                  }
                 }
               },
               child: FaIcon(FontAwesomeIcons.search, color: ThemeColors.iconsColors)

@@ -88,15 +88,6 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
         width: double.infinity,
         height: double.infinity,
         color: _startColor,
-        /*decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [
-                  _starColor,
-                  _endColor
-                ],
-                stops: [0.0, 0.95]
-            )
-        )*/
     );
   }
 
@@ -120,7 +111,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
                 onPressed: () => Navigator.pushNamed(context, '/location_map', arguments: {"Location": _location}),
               ),
             ),
-            Container(
+            /*Container(
               height: _screenSize.height*0.04,
               width: _screenSize.width*0.8,
               child: FlatButton(
@@ -130,7 +121,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
                     onPressed: (){},
 //                onPressed: () => Navigator.pushNamed(context, '/location_map'),
               ),
-            ),
+            ),*/
             Container(
               height: _screenSize.height*0.04,
               width: _screenSize.width*0.5,
@@ -358,7 +349,7 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
 
               if(_pages == null){
                 _pages = [
-                  SitesPage(sitesOfLocationSelected: sites == null ? [] : sites),
+                  SitesPage(sitesOfLocationSelected: sites == null ? [] : sites, location: _location),
                   SitesPage(sitesOfLocationSelected: cultural == null ? [] : cultural),
                   EventsPage(events: snapshot.data.location.events == null ? [] : snapshot.data.location.events,),
                   HistoriesPage(histories: snapshot.data.location.histories == null ? [] : snapshot.data.location.histories),
@@ -388,11 +379,11 @@ class _DetailLocationPageState extends State<DetailLocationPage> with SingleTick
         var resultByActivity = searcher.searchSiteByActivity(_stringToSearch);
         var resultByType = searcher.searchSiteByType(_stringToSearch);
         if(resultByName.length > 0){
-          _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByName);
+          _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByName, location: _location);
         }else if(resultByActivity.length > 0){
-          _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByActivity);
+          _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByActivity, location: _location);
         }else if(resultByType.length > 0){
-          _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByType);
+          _pages[_selectedPage] = SitesPage(sitesOfLocationSelected: resultByType, location: _location);
         }
       }else if(_pages[_selectedPage] is EventsPage){
         var resultByName = searcher.searchEventByName(_stringToSearch);

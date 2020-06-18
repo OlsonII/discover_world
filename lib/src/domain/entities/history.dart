@@ -4,12 +4,14 @@ class History {
   String name;
   String content;
   String type;
+  String image;
 
   History({
     this.id,
     this.name,
     this.content,
     this.type,
+    this.image
   });
 
   factory History.fromJson(Map<String, dynamic> json) => History(
@@ -17,6 +19,7 @@ class History {
     name: json["name"],
     content: json["content"],
     type: json["type"],
+    image: json["image"]
   );
 
   Map<String, dynamic> toJson() => {

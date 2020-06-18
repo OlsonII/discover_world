@@ -1,12 +1,14 @@
+import 'package:discover_world/src/domain/entities/location.dart';
 import 'package:discover_world/src/domain/entities/site.dart';
 import 'package:flutter/material.dart';
 
 class SitesPage extends StatelessWidget {
 
   List<Site> sitesOfLocationSelected;
+  Location location;
   Size _screenSize;
 
-  SitesPage({@required this.sitesOfLocationSelected}) : assert(sitesOfLocationSelected != null);
+  SitesPage({@required this.sitesOfLocationSelected, this.location}) : assert(sitesOfLocationSelected != null);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class SitesPage extends StatelessWidget {
             ],
           ),
         ),
-        onTap: () => Navigator.of(context).pushNamed('/details_site', arguments: site),
+        onTap: () => Navigator.of(context).pushNamed('/details_site', arguments: {"Site": site, "Location": location}),
       ),
     );
   }

@@ -12,7 +12,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="discover_world"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/icon_launcher">
 
         <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyCMilZYFIj639EFETXXB9ishMktb4JGKzU"/>
