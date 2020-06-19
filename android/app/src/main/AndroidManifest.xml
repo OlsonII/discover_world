@@ -11,7 +11,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="discover_world"
+        android:label="TuristApp"
         android:icon="@mipmap/icon_launcher">
 
         <meta-data android:name="com.google.android.geo.API_KEY"
